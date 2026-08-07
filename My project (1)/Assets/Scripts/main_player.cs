@@ -24,6 +24,11 @@ public class main_player : MonoBehaviour
     private int comboStep = 0;
     private float lastClickTime = -999f;
 
+    public SpriteRenderer characters_sprite;
+    public Sprite normal_picture;
+    public Sprite turning_picture;
+
+
     void Update()
     {
         // ---- MOUSE TAKİBİ ----
@@ -43,7 +48,7 @@ public class main_player : MonoBehaviour
             float vertical = Input.GetAxisRaw("Vertical");
             float horizontal = Input.GetAxisRaw("Horizontal");
             Vector2 movement = new Vector2(horizontal, vertical);
-            transform.Translate(movement.normalized * forward_speed * Time.deltaTime, Space.World);
+            transform.Translate(movement.normalized * forward_speed * Time.deltaTime, Space.Self);
         }
 
         // ---- COMBO RESET ----
@@ -122,16 +127,28 @@ public class main_player : MonoBehaviour
 
     IEnumerator SpinAttack()
     {
-        // Etrafında dönmeye başlar başlamaz hasar vur (Alan hasarı)
+        // 1. DÖNÜŞ BAŞLIYOR: Karakterin resmini "Dönme Resmi" ile değiştir!
+        if (characters_sprite != null && turning_picture != null)
+        {
+            characters_sprite.sprite = turning_picture;
+        }
+
+        // Alan hasarı
         DealDamage();
 
         float rotated = 0f;
-        while (rotated < 360f)
+        while (rotated < 720f)
         {
             float step = spinSpeed * Time.deltaTime;
             rotated += step;
             transform.Rotate(0, 0, -step);
             yield return null;
+        }
+
+        // 2. DÖNÜŞ BİTTİ: Karakteri tekrar "Normal Resmine" döndür!
+        if (characters_sprite != null && normal_picture != null)
+        {
+            characters_sprite.sprite = normal_picture;
         }
     }
 
@@ -145,7 +162,7 @@ public class main_player : MonoBehaviour
         foreach (Collider2D enemyObj in hitEnemies)
         {
             // İkinci adımda yazdığımız (veya yazacağımız) Enemy kodunu hedefin içinde arıyoruz
-            Enemy target = enemyObj.GetComponent<Enemy>();
+            /*Enemy target = enemyObj.GetComponent<Enemy>();
             
             // Eğer objede Enemy kodu varsa, canını düşürüyoruz
             if (target != null)
@@ -157,6 +174,7 @@ public class main_player : MonoBehaviour
                 // Eğer Enemy kodu henüz yoksa bile vurduğumuzu log ile görelim
                 Debug.Log("Kılıç şuna çarptı (Ama Enemy kodu yok): " + enemyObj.name); 
             }
+             */
         }
     }
 

@@ -119,12 +119,12 @@ TextureImporter:
       name: WhatsApp_Image_2026-08-07_at_21_36_12_2K_nobg_0
       rect:
         serializedVersion: 2
-        x: 499
-        y: 1398
-        width: 684
-        height: 485
+        x: 500
+        y: 1399
+        width: 682
+        height: 483
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -141,12 +141,12 @@ TextureImporter:
       name: WhatsApp_Image_2026-08-07_at_21_36_12_2K_nobg_1
       rect:
         serializedVersion: 2
-        x: 493
-        y: 220
-        width: 740
-        height: 484
+        x: 494
+        y: 222
+        width: 738
+        height: 481
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -163,7 +163,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: ac522bb9056c00243954306baa0bc397
     internalID: 0
     vertices: []
     indices: 
@@ -171,7 +171,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       WhatsApp_Image_2026-08-07_at_21_36_12_2K_nobg_0: 1783056921774895386
       WhatsApp_Image_2026-08-07_at_21_36_12_2K_nobg_1: -698610201795736891
