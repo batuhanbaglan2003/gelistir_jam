@@ -6,10 +6,6 @@ public class main_player : MonoBehaviour
     [Header("Hareket")]
     public float forward_speed = 5f;
 
-    [Header("Kılıçlar (opsiyonel, görsel efekt için)")]
-    public Transform rightSword;
-    public Transform leftSword;
-
     [Header("Saldırı Ayarları")]
     public float swingAngle = 45f;
     public float swingDuration = 0.15f;
@@ -17,6 +13,12 @@ public class main_player : MonoBehaviour
 
     [Header("Combo Ayarları")]
     public float comboResetTime = 0.6f;
+
+    [Header("Savaş Sistemi")]
+    public Transform attackPoint; // Karakterin tam önüne koyduğumuz boş obje
+    public float attackRange = 1.2f; // Kılıcın menzili
+    public int attackDamage = 25; // Vereceğimiz hasar
+    public LayerMask enemyLayers; // Vurulacak katman (Enemy)
 
     private bool isAttacking = false;
     private int comboStep = 0;
@@ -91,6 +93,8 @@ public class main_player : MonoBehaviour
         float targetZ = startZ + angle;
 
         float elapsed = 0f;
+        
+        // 1. Kılıcı ileri savur
         while (elapsed < swingDuration)
         {
             elapsed += Time.deltaTime;
@@ -100,7 +104,12 @@ public class main_player : MonoBehaviour
         }
         transform.rotation = Quaternion.Euler(0, 0, targetZ);
 
+        // KILIÇ HEDEFE ULAŞTIĞI AN HASAR VUR!
+        DealDamage();
+
         elapsed = 0f;
+        
+        // 2. Kılıcı geri çek
         while (elapsed < swingDuration)
         {
             elapsed += Time.deltaTime;
@@ -113,6 +122,9 @@ public class main_player : MonoBehaviour
 
     IEnumerator SpinAttack()
     {
+        // Etrafında dönmeye başlar başlamaz hasar vur (Alan hasarı)
+        DealDamage();
+
         float rotated = 0f;
         while (rotated < 360f)
         {
@@ -121,5 +133,38 @@ public class main_player : MonoBehaviour
             transform.Rotate(0, 0, -step);
             yield return null;
         }
+    }
+
+    void DealDamage()
+    {
+        if (attackPoint == null) return;
+
+        // attackPoint merkezli bir daire çiz ve içindeki enemyLayers katmanındaki herkesi bul
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
+
+        foreach (Collider2D enemyObj in hitEnemies)
+        {
+            // İkinci adımda yazdığımız (veya yazacağımız) Enemy kodunu hedefin içinde arıyoruz
+            Enemy target = enemyObj.GetComponent<Enemy>();
+            
+            // Eğer objede Enemy kodu varsa, canını düşürüyoruz
+            if (target != null)
+            {
+                target.TakeDamage(attackDamage);
+            }
+            else 
+            {
+                // Eğer Enemy kodu henüz yoksa bile vurduğumuzu log ile görelim
+                Debug.Log("Kılıç şuna çarptı (Ama Enemy kodu yok): " + enemyObj.name); 
+            }
+        }
+    }
+
+    // Unity ekranında vuruş menzilini görmeni sağlar (Oyunda görünmez)
+    void OnDrawGizmosSelected()
+    {
+        if (attackPoint == null) return;
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
     }
 }
