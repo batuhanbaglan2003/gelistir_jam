@@ -3,28 +3,60 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
+    [Header("Saldırı Ayarları")]
     [SerializeField] private GameObject attackHitbox; 
-    
-    // Artık bu değer, savurma hareketinin "kaç saniye süreceğini" belirliyor. 
-    // Sayı küçüldükçe daha hızlı savurur.
-    [SerializeField] private float vurusSuresi = 0.2f; 
+    [SerializeField] private float vurusSuresi = 0.5f; 
     [SerializeField] private float beklemeSuresi = 1.0f; 
 
+    [Header("Yapay Zeka Ayarları")]
+    [SerializeField] private float algilamaMesafesi = 5f; // Düşmanın seni göreceği sınır
+    [SerializeField] private float saldiriMesafesi = 1.2f; // Kılıç vurmaya başlayacağı sınır
+    [SerializeField] private float hareketHizi = 2f; // Düşmanın yürüme hızı
+
+    private Transform playerTarget;
     private bool isAttacking = false;
 
     private void Start()
     {
-        if (attackHitbox != null)
+        if (attackHitbox != null) attackHitbox.SetActive(false);
+
+        // 1. RADAR: Oyun başladığında sahnede "Player" etiketine sahip objeyi bulur
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        if (playerObj != null)
         {
-            attackHitbox.SetActive(false);
+            playerTarget = playerObj.transform;
         }
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !isAttacking)
+        // Hedef yoksa veya zaten kılıç savuruyorsa yeni hareket yapma
+        if (playerTarget == null || isAttacking) return;
+
+        // 2. MESAFE ÖLÇÜMÜ: Düşman ile oyuncu arasındaki mesafeyi hesaplar
+        float mesafe = Vector2.Distance(transform.position, playerTarget.position);
+
+        // 3. DURUM MAKİNESİ (Eğer oyuncu algılama menziline girdiyse)
+        if (mesafe <= algilamaMesafesi)
         {
-            StartCoroutine(AttackSequence());
+            // YÜZÜNÜ OYUNCUYA DÖN (Vektör Matematiği)
+            Vector2 yon = playerTarget.position - transform.position;
+            
+            // Eğer düşman yan veya ters dönüyorsa sondaki -90f kısmını +90f, 180f veya 0f yaparak düzeltebilirsin.
+            float aci = Mathf.Atan2(yon.y, yon.x) * Mathf.Rad2Deg - 90f; 
+            transform.rotation = Quaternion.Euler(0, 0, aci);
+
+            // SALDIRI YA DA TAKİP KARARI
+            if (mesafe <= saldiriMesafesi)
+            {
+                // Menzile girdiyse dur ve kılıç savur
+                StartCoroutine(AttackSequence());
+            }
+            else
+            {
+                // Henüz vuracak kadar yakın değilse üstüne yürümeye devam et
+                transform.position = Vector2.MoveTowards(transform.position, playerTarget.position, hareketHizi * Time.deltaTime);
+            }
         }
     }
 
@@ -33,47 +65,34 @@ public class EnemyController : MonoBehaviour
         isAttacking = true;
         Quaternion originalRotation = transform.rotation;
 
-        // 1. GERİLME (Rüzgar alma): Önce kılıcı vurmak için geriye doğru (sağa) yumuşakça kalksın
         Quaternion rightRotation = originalRotation * Quaternion.Euler(0, 0, -45f);
-        yield return StartCoroutine(SmoothRotate(rightRotation, vurusSuresi / 2f)); // Gerilme daha kısa sürsün
+        yield return StartCoroutine(SmoothRotate(rightRotation, vurusSuresi / 2f)); 
 
-        // 2. VURUŞ BAŞLIYOR: Hitbox'ı aç
         if (attackHitbox != null) attackHitbox.SetActive(true);
 
-        // 3. SAVURMA (Saldırı): Sağdan sola doğru, kılıcı savurarak akışkan bir geçiş yap
         Quaternion leftRotation = originalRotation * Quaternion.Euler(0, 0, 45f);
         yield return StartCoroutine(SmoothRotate(leftRotation, vurusSuresi)); 
 
-        // 4. VURUŞ BİTTİ: Hitbox'ı kapat
         if (attackHitbox != null) attackHitbox.SetActive(false);
 
-        // 5. TOPARLANMA: Vurduktan sonra karakter yavaşça eski düz haline dönsün
         yield return StartCoroutine(SmoothRotate(originalRotation, vurusSuresi / 2f));
 
-        // Yeni vuruş için bekleme süresi
         yield return new WaitForSeconds(beklemeSuresi);
         
         isAttacking = false; 
     }
 
-    // İki açı arasında akışkan geçiş yapmamızı sağlayan yardımcı matematiksel döngümüz
     private IEnumerator SmoothRotate(Quaternion targetRotation, float duration)
     {
         Quaternion startRotation = transform.rotation;
         float timeElapsed = 0f;
 
-        // Belirlenen süre dolana kadar her frame (kare) burası çalışır
         while (timeElapsed < duration)
         {
-            // Zaman aktıkça açıyı adım adım hedefe yaklaştırır
             transform.rotation = Quaternion.Slerp(startRotation, targetRotation, timeElapsed / duration);
             timeElapsed += Time.deltaTime;
-            
-            // Bir sonraki frame'e (kareye) kadar bekle
             yield return null; 
         }
-
-        // Süre bittiğinde, tam hedeflenen açıda olduğumuzdan emin olmak için sabitleriz
         transform.rotation = targetRotation;
     }
 }
