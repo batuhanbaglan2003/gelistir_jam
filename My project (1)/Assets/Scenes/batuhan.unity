@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 248252761}
   m_Layer: 0
   m_Name: Main_Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -174,9 +174,10 @@ MonoBehaviour:
   forward_speed: 5
   rightSword: {fileID: 604986730}
   leftSword: {fileID: 1237596820}
-  swingAngle: 140
+  swingAngle: 70
   swingDuration: 0.12
   spinSpeed: 900
+  comboResetTime: 0.6
 --- !u!212 &248252763
 SpriteRenderer:
   serializedVersion: 3
