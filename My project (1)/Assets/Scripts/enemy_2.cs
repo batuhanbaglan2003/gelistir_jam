@@ -8,6 +8,7 @@ public class enemy_2 : MonoBehaviour
     [Header("Hareket Ayarları")]
     public float hiz = 2f; 
     public float durmaMenzili = 6f; 
+    public float algilamaMesafesi = 10f; // YENİ EKLENDİ
 
     [Header("Saldırı Ayarları")]
     public GameObject alevTopuPrefab; 
@@ -39,19 +40,27 @@ public class enemy_2 : MonoBehaviour
         // Oyuncunun koordinatını değil, yeşil kutusunun (Collider) tam GÖBEĞİNİ hedef al
         Vector2 hedefNoktasi = playerCollider.bounds.center;
         
-        Vector2 yon = hedefNoktasi - (Vector2)transform.position;
-        transform.up = yon;
-
+        // Mesafeyi en baştan ölçüyoruz
         float mesafe = Vector2.Distance(transform.position, hedefNoktasi);
 
-        if (mesafe > durmaMenzili)
+        // EĞER OYUNCU ALGILAMA MESAFESİNDEYSE HAREKETE GEÇ
+        if (mesafe <= algilamaMesafesi)
         {
-            transform.Translate(Vector2.up * hiz * Time.deltaTime, Space.Self);
-        }
-        else if (mesafe <= durmaMenzili && Time.time >= sonAtisZamani + atisBeklemeSuresi)
-        {
-            sonAtisZamani = Time.time;
-            AtesEt();
+            // Önce oyuncuya dön
+            Vector2 yon = hedefNoktasi - (Vector2)transform.position;
+            transform.up = yon;
+
+            // Eğer durma menzilinden uzaktaysa yaklaş
+            if (mesafe > durmaMenzili)
+            {
+                transform.Translate(Vector2.up * hiz * Time.deltaTime, Space.Self);
+            }
+            // Durma menziline girdiyse ve bekleme süresi dolduysa ateş et
+            else if (mesafe <= durmaMenzili && Time.time >= sonAtisZamani + atisBeklemeSuresi)
+            {
+                sonAtisZamani = Time.time;
+                AtesEt();
+            }
         }
     }
 

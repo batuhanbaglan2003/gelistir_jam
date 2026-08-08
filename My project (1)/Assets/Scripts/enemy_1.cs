@@ -9,6 +9,7 @@ public class enemy_1 : MonoBehaviour
 
     [Header("Hareket Ayarları")]
     public float hiz = 3f;
+    public float algilamaMesafesi = 7f; // YENİ: Düşmanın seni fark edeceği maksimum uzaklık
 
     [Header("Saldırı Ayarları")]
     public float saldiriMenzili = 1.5f; 
@@ -43,21 +44,29 @@ public class enemy_1 : MonoBehaviour
     {
         if (playerTransform == null) return;
 
+        // Mesafeyi ölçüyoruz
         float mesafe = Vector2.Distance(transform.position, playerTransform.position);
 
-        if (!isAttacking)
+        // EĞER OYUNCU ALGILAMA MESAFESİNDEYSE HAREKETE GEÇ (Yeni eklenen kontrol)
+        if (mesafe <= algilamaMesafesi) 
         {
-            transform.up = playerTransform.position - transform.position;
-        }
+            // Yüzünü oyuncuya dön
+            if (!isAttacking)
+            {
+                transform.up = playerTransform.position - transform.position;
+            }
 
-        if (mesafe > saldiriMenzili && !isAttacking)
-        {
-            transform.Translate(Vector2.up * hiz * Time.deltaTime, Space.Self);
-        }
-        else if (mesafe <= saldiriMenzili && Time.time > sonSaldiriZamani + saldiriBeklemeSuresi && !isAttacking)
-        {
-            sonSaldiriZamani = Time.time;
-            StartCoroutine(KazmaSavur());
+            // Saldırı menziline girene kadar oyuncuya doğru yürü
+            if (mesafe > saldiriMenzili && !isAttacking)
+            {
+                transform.Translate(Vector2.up * hiz * Time.deltaTime, Space.Self);
+            }
+            // Saldırı menziline girdiyse ve bekleme süresi dolduysa saldır!
+            else if (mesafe <= saldiriMenzili && Time.time > sonSaldiriZamani + saldiriBeklemeSuresi && !isAttacking)
+            {
+                sonSaldiriZamani = Time.time;
+                StartCoroutine(KazmaSavur());
+            }
         }
     }
 
