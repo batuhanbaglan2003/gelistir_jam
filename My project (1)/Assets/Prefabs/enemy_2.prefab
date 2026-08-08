@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 546122746482589984}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Atis_Noktasi
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,9 +44,9 @@ GameObject:
   - component: {fileID: 4934582439347489898}
   - component: {fileID: 8812380683642226198}
   - component: {fileID: 3432005987835831681}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: enemy_2
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -139,6 +139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abe901f27e9ab7e479397b765ca55c28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::enemy_2
+  can: 2
   hiz: 2
   durmaMenzili: 6
   alevTopuPrefab: {fileID: 241190972128572067, guid: e7bf388505038fc49b2101442de45e13, type: 3}
@@ -202,8 +203,8 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
+  m_Mass: 40
+  m_LinearDamping: 15
   m_AngularDamping: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}

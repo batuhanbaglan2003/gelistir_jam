@@ -100,20 +100,16 @@ public class enemy_1 : MonoBehaviour
 
     void VurulanlariTara()
     {
-        if (vurusNoktasi == null) return;
-
-        // Kazmanın ucundaki yuvarlak alanda 'Player' arıyoruz
-        Collider2D[] vurulanlar = Physics2D.OverlapCircleAll(vurusNoktasi.position, vurusYariCapi, playerLayer);
+        // Sahnede main_player koduna sahip objeyi (seni) bulur
+        main_player oyuncu = FindObjectOfType<main_player>();
         
-        foreach (Collider2D vurulan in vurulanlar)
+        if (oyuncu != null)
         {
-            // Vurulan objede main_player kodu var mı?
-            main_player oyuncuKodu = vurulan.GetComponent<main_player>();
-            
-            if (oyuncuKodu != null)
+            // Kazmanın vurma alanında mısın diye mesafeyi ölçer
+            if (Vector2.Distance(transform.position, oyuncu.transform.position) <= vurusYariCapi)
             {
-                oyuncuKodu.HasarAl(attackDamage); // Senin canını azaltır!
-                Debug.Log("Enemy 1 sana KAZMA İLE VURDU!");
+                oyuncu.HasarAl(attackDamage); 
+                Debug.Log("Enemy 1 sana KESİN OLARAK VURDU!");
             }
         }
     }

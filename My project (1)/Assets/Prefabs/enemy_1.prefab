@@ -154,8 +154,8 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
+  m_Mass: 40
+  m_LinearDamping: 15
   m_AngularDamping: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -181,13 +181,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74a483c7e3a4e0340962f3c508c2ea5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  can: 3
   hiz: 3
   saldiriMenzili: 1.5
   saldiriBeklemeSuresi: 1.5
+  attackDamage: 1
   savurmaAcisi: 90
   savurmaHizi: 0.15
-  vurusNoktasi: {fileID: 1756281977926273200}
-  vurusYariCapi: 0.5
+  vurusNoktasi: {fileID: 8092452717295139073}
+  vurusYariCapi: 2
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &2888266588465777128
 GameObject:
   m_ObjectHideFlags: 0

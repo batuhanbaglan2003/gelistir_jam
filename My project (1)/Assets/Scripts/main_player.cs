@@ -179,27 +179,28 @@ public class main_player : MonoBehaviour
 
     void DealDamage()
     {
-        if (attackPoint == null) return;
-
-        // attackPoint merkezli bir daire çiz ve içindeki enemyLayers katmanındaki herkesi bul
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
-
-        foreach (Collider2D enemyObj in hitEnemies)
+        // Unity fizik motoru (OverlapCircleAll) yerine %100 çalışan mesafe ölçümü kullanıyoruz
+        
+        // 1. Sahnede ne kadar enemy_1 (Koşucu) varsa bul
+        enemy_1[] butunKosucular = FindObjectsOfType<enemy_1>();
+        foreach (enemy_1 kosucu in butunKosucular)
         {
-            // İsimleri senin dosya adlarına göre düzelttim (enemy_1 ve enemy_2)
-            
-            // Önce enemy_1 (Kosucu) kodunu arıyoruz
-            enemy_1 kosucuDusman = enemyObj.GetComponent<enemy_1>();
-            if (kosucuDusman != null)
+            // Eğer senin karakterin ile düşman arasındaki mesafe, kılıç menzilinden (attackRange) kısaysa vur!
+            if (Vector2.Distance(transform.position, kosucu.transform.position) <= attackRange)
             {
-                kosucuDusman.HasarAl(attackDamage);
+                kosucu.HasarAl(attackDamage);
+                Debug.Log("Kılıç Enemy 1'e KESİN OLARAK DEĞDİ!");
             }
-            
-            // Eğer enemy_1 değilse, belki enemy_2 (Buyucu) dur
-            enemy_2 buyucuDusman = enemyObj.GetComponent<enemy_2>();
-            if(buyucuDusman != null)
+        }
+
+        // 2. Sahnede ne kadar enemy_2 (Büyücü) varsa bul
+        enemy_2[] butunBuyuculer = FindObjectsOfType<enemy_2>();
+        foreach (enemy_2 buyucu in butunBuyuculer)
+        {
+            if (Vector2.Distance(transform.position, buyucu.transform.position) <= attackRange)
             {
-                buyucuDusman.HasarAl(attackDamage);
+                buyucu.HasarAl(attackDamage);
+                Debug.Log("Kılıç Enemy 2'ye KESİN OLARAK DEĞDİ!");
             }
         }
     }

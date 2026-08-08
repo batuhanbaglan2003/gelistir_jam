@@ -1,11 +1,9 @@
 using UnityEngine;
 
-// DİKKAT: Dosyanın adı enemy_2.cs ise sınıf adı enemy_2 olmalı.
-// Eğer dosyanın adı enemy2.cs ise sınıf adını enemy2 yap.
 public class enemy_2 : MonoBehaviour
 {
     [Header("Can Sistemi")]
-    public int can = 2; // Büyücünün canı (2 kılıç darbesinde ölür)
+    public int can = 2;
 
     [Header("Hareket Ayarları")]
     public float hiz = 2f; 
@@ -17,6 +15,7 @@ public class enemy_2 : MonoBehaviour
     public float atisBeklemeSuresi = 2f; 
 
     private Transform playerTransform;
+    private Collider2D playerCollider;
     private float sonAtisZamani = 0f;
 
     void Start()
@@ -25,23 +24,21 @@ public class enemy_2 : MonoBehaviour
         if (playerObj != null)
         {
             playerTransform = playerObj.transform;
-            Debug.Log("Düşman oyuncuyu BULDU!");
-        }
-        else
-        {
-            Debug.LogError("Düşman oyuncuyu BULAMADI! Player etiketi eksik olabilir.");
+            playerCollider = playerObj.GetComponent<Collider2D>();
         }
     }
 
     void Update()
     {
-        if (playerTransform == null) return;
+        if (playerTransform == null || playerCollider == null) return;
 
-        // Düşmanı oyuncuya döndür (Z ekseninde)
-        Vector2 yon = playerTransform.position - transform.position;
+        // Oyuncunun koordinatını değil, yeşil kutusunun (Collider) tam GÖBEĞİNİ hedef al
+        Vector2 hedefNoktasi = playerCollider.bounds.center;
+        
+        Vector2 yon = hedefNoktasi - (Vector2)transform.position;
         transform.up = yon;
 
-        float mesafe = Vector2.Distance(transform.position, playerTransform.position);
+        float mesafe = Vector2.Distance(transform.position, hedefNoktasi);
 
         if (mesafe > durmaMenzili)
         {
@@ -57,21 +54,15 @@ public class enemy_2 : MonoBehaviour
     void AtesEt()
     {
         if (alevTopuPrefab == null || atisNoktasi == null) return;
-
-        // Mermiyi Yarat
         Instantiate(alevTopuPrefab, atisNoktasi.position, atisNoktasi.rotation);
     }
 
-    // --- YENİ EKLENDİ: SEN KILIÇ SALLADIĞINDA ÇALIŞACAK ---
     public void HasarAl(int alinacakHasar)
     {
         can -= alinacakHasar;
-        Debug.Log("Enemy 2 hasar aldı! Kalan Can: " + can);
-
         if (can <= 0)
         {
-            Debug.Log("Enemy 2 ÖLDÜ!");
-            Destroy(gameObject); // Büyücü silinir
+            Destroy(gameObject);
         }
     }
 }

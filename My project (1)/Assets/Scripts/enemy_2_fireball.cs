@@ -1,43 +1,44 @@
 using UnityEngine;
 
-// Sınıf adın dosya adıyla BİREBİR aynı olmalı (seninki enemy_2_fireball)
 public class enemy_2_fireball : MonoBehaviour 
 {
     public float hiz = 7f;
     public float yasamSuresi = 3f;
-    public int attackDamage = 1; // Alev topu kaç can silecek (1 can = yarım kalp)
+    public int attackDamage = 1; 
+    public float carpmaMesafesi = 1.0f; // Sıyırmaması için alanı biraz büyüttük
+
+    private main_player oyuncu;
+    private Collider2D oyuncuCollider;
+    private Vector3 ucusYonu; // Merminin gideceği kesin çizgi
 
     void Start()
     {
+        oyuncu = FindObjectOfType<main_player>(); 
+        if (oyuncu != null)
+        {
+            oyuncuCollider = oyuncu.GetComponent<Collider2D>();
+            
+            // Doğduğu an oyuncunun göbeğinin yerini tespit et ve o yönü kilitle!
+            ucusYonu = (oyuncuCollider.bounds.center - transform.position).normalized;
+        }
         Destroy(gameObject, yasamSuresi); 
     }
 
     void Update()
     {
-        transform.Translate(Vector3.up * hiz * Time.deltaTime, Space.Self);
-    }
+        // Unity'nin kendi yönlerini (transform.up vb.) tamamen siktir et, kilitlenen yöne uç
+        transform.position += ucusYonu * hiz * Time.deltaTime;
 
-    // Mermi bir şeye dokunduğunda bu fonksiyon otomatik çalışır
-    void OnTriggerEnter2D(Collider2D temas)
-    {
-        // Eğer temas ettiğimiz objenin etiketi "Player" ise
-        if (temas.CompareTag("Player"))
+        if (oyuncu != null && oyuncuCollider != null)
         {
-            // Vurduğumuz objeden 'main_player' kodunu çek
-            main_player oyuncuKodu = temas.GetComponent<main_player>();
+            float mesafe = Vector2.Distance(transform.position, oyuncuCollider.bounds.center);
             
-            if (oyuncuKodu != null)
+            if (mesafe <= carpmaMesafesi)
             {
-                oyuncuKodu.HasarAl(attackDamage); // Oyuncuya hasar ver!
-                Debug.Log("Mermi oyuncuya ÇARPTI ve 1 can (yarım kalp) sildi!");
+                oyuncu.HasarAl(attackDamage);
+                Debug.Log("Alev topu tam göbekten vurdu!");
+                Destroy(gameObject); 
             }
-            
-            // Mermiyi (kendi kendini) sil
-            Destroy(gameObject); 
-        }
-        else if (temas.CompareTag("Duvar")) 
-        {
-            Destroy(gameObject);
         }
     }
 }
