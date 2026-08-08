@@ -18,6 +18,10 @@ public class enemy_2 : MonoBehaviour
     private Collider2D playerCollider;
     private float sonAtisZamani = 0f;
 
+    // YENİ: Kılıç savrulurken saniyede 10 kere hasar almayı engelleyen kalkan sistemi
+    private float sonHasarAlmaZamani = 0f;
+    private float hasarAlmaBeklemeSuresi = 0.4f; // Kılıç sallama süresinden büyük olmalı
+
     void Start()
     {
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
@@ -59,7 +63,13 @@ public class enemy_2 : MonoBehaviour
 
     public void HasarAl(int alinacakHasar)
     {
+        // YENİ EKLENDİ: Kalkan (Cooldown) devredeyse hasarı iptal et
+        if (Time.time < sonHasarAlmaZamani + hasarAlmaBeklemeSuresi) return;
+
+        sonHasarAlmaZamani = Time.time;
         can -= alinacakHasar;
+        Debug.Log("Büyücü kılıç darbesi aldı! Kalan can: " + can); 
+        
         if (can <= 0)
         {
             Destroy(gameObject);

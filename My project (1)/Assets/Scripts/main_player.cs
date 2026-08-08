@@ -1,14 +1,14 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI; // UI resimlerini değiştirmek için eklendi
+using UnityEngine.UI; 
 
 public class main_player : MonoBehaviour
 {
     [Header("Can Sistemi ve UI")]
     public int maksimumCan = 10;
     public int guncelCan;
-    public Image kalpGorseli; // Canvas'taki Image buraya sürüklenecek
-    public Sprite[] kalpResimleri; // 11 adet (0'dan 10'a kadar) kalp resimleri buraya eklenecek
+    public Image kalpGorseli; 
+    public Sprite[] kalpResimleri; 
 
     [Header("Hareket")]
     public float forward_speed = 5f;
@@ -22,15 +22,18 @@ public class main_player : MonoBehaviour
     public float comboResetTime = 0.6f;
 
     [Header("Savaş Sistemi")]
-    public Transform attackPoint; // Karakterin tam önüne koyduğumuz boş obje
-    public float attackRange = 1.2f; // Kılıcın menzili
-    public int attackDamage = 1; // Vereceğimiz hasar (1 can = yarım kalp mantığına göre ayarladık)
-    public LayerMask enemyLayers; // Vurulacak katman (Enemy)
+    public Transform attackPoint; 
+    public float attackRange = 1.2f; 
+    public int attackDamage = 1; 
+    public LayerMask enemyLayers; 
 
     private bool isAttacking = false;
     private int comboStep = 0;
     private float lastClickTime = -999f;
-    private Rigidbody2D rb; // Fizik motoru için
+    private Rigidbody2D rb; 
+
+    // YENİ: Kılıcın savrulurken açık kalıp kalmadığını kontrol eden sistem
+    private bool kilicAktifMi = false; 
 
     public SpriteRenderer characters_sprite;
     public Sprite normal_picture;
@@ -38,11 +41,10 @@ public class main_player : MonoBehaviour
 
     void Start()
     {
-        // Oyuna başlarken canı fulle ve kalpleri güncelle
         guncelCan = maksimumCan;
         KalpResminiGuncelle();
         
-        rb = GetComponent<Rigidbody2D>(); // Karakterdeki Rigidbody'i bul
+        rb = GetComponent<Rigidbody2D>(); 
     }
 
     void Update()
@@ -65,7 +67,6 @@ public class main_player : MonoBehaviour
             float horizontal = Input.GetAxisRaw("Horizontal");
             Vector2 movement = new Vector2(horizontal, vertical);
             
-            // Eğer fizik motoru varsa rb ile, yoksa Translate ile hareket et
             if(rb != null)
                 rb.linearVelocity = movement.normalized * forward_speed;
             else
@@ -73,7 +74,7 @@ public class main_player : MonoBehaviour
         }
         else
         {
-            if(rb != null) rb.linearVelocity = Vector2.zero; // Saldırırken karakteri durdur
+            if(rb != null) rb.linearVelocity = Vector2.zero; 
         }
 
         // ---- COMBO RESET ----
@@ -90,22 +91,56 @@ public class main_player : MonoBehaviour
 
             switch (comboStep)
             {
-                case 1: // sağ
+                case 1: 
                     StartCoroutine(RunAttack(BodySwing(-swingAngle)));
                     break;
-                case 2: // sol
+                case 2: 
                     StartCoroutine(RunAttack(BodySwing(swingAngle)));
                     break;
-                case 3: // sağ
+                case 3: 
                     StartCoroutine(RunAttack(BodySwing(-swingAngle)));
                     break;
-                case 4: // sol
+                case 4: 
                     StartCoroutine(RunAttack(BodySwing(swingAngle)));
                     break;
-                default: // 5. tık -> spin, combo sıfırlanır
+                default: 
                     StartCoroutine(RunAttack(SpinAttack()));
                     comboStep = 0;
                     break;
+            }
+        }
+
+        // ---- YENİ: SÜREKLİ HASAR KONTROLÜ ----
+        if (kilicAktifMi && attackPoint != null)
+        {
+            // Koşucuları kontrol et
+            enemy_1[] butunKosucular = FindObjectsOfType<enemy_1>();
+            foreach (enemy_1 kosucu in butunKosucular)
+            {
+                if (Vector2.Distance(attackPoint.position, kosucu.transform.position) <= attackRange)
+                {
+                    kosucu.HasarAl(attackDamage);
+                }
+            }
+
+            // Büyücüleri kontrol et
+            enemy_2[] butunBuyuculer = FindObjectsOfType<enemy_2>();
+            foreach (enemy_2 buyucu in butunBuyuculer)
+            {
+                if (Vector2.Distance(attackPoint.position, buyucu.transform.position) <= attackRange)
+                {
+                    buyucu.HasarAl(attackDamage);
+                }
+            }
+
+            // ŞİFACILARI KONTROL ET (BUNU EKLEDİK!)
+            enemy_3[] butunSifacilar = FindObjectsOfType<enemy_3>();
+            foreach (enemy_3 sifaci in butunSifacilar)
+            {
+                if (Vector2.Distance(attackPoint.position, sifaci.transform.position) <= attackRange)
+                {
+                    sifaci.HasarAl(attackDamage);
+                }
             }
         }
     }
@@ -124,6 +159,8 @@ public class main_player : MonoBehaviour
 
         float elapsed = 0f;
         
+        kilicAktifMi = true; // YENİ: KILIÇ AÇILDI! Savurma bitene kadar değdiği herkesi kesecek
+
         // 1. Kılıcı ileri savur
         while (elapsed < swingDuration)
         {
@@ -134,8 +171,7 @@ public class main_player : MonoBehaviour
         }
         transform.rotation = Quaternion.Euler(0, 0, targetZ);
 
-        // KILIÇ HEDEFE ULAŞTIĞI AN HASAR VUR!
-        DealDamage();
+        // DealDamage()'i sildik çünkü artık Update içinde sürekli kontrol ediliyor
 
         elapsed = 0f;
         
@@ -148,6 +184,8 @@ public class main_player : MonoBehaviour
             yield return null;
         }
         transform.rotation = Quaternion.Euler(0, 0, startZ);
+
+        kilicAktifMi = false; // YENİ: KILIÇ KAPANDI!
     }
 
     IEnumerator SpinAttack()
@@ -158,8 +196,7 @@ public class main_player : MonoBehaviour
             characters_sprite.sprite = turning_picture;
         }
 
-        // Alan hasarı
-        DealDamage();
+        kilicAktifMi = true; // YENİ: DÖNÜŞ BAŞLADI, KILIÇ AÇIK!
 
         float rotated = 0f;
         while (rotated < 720f)
@@ -170,6 +207,8 @@ public class main_player : MonoBehaviour
             yield return null;
         }
 
+        kilicAktifMi = false; // YENİ: DÖNÜŞ BİTTİ, KILIÇ KAPANDI!
+
         // 2. DÖNÜŞ BİTTİ: Karakteri normal resmine döndür!
         if (characters_sprite != null && normal_picture != null)
         {
@@ -179,17 +218,15 @@ public class main_player : MonoBehaviour
 
     void DealDamage()
     {
-        // Unity fizik motoru (OverlapCircleAll) yerine %100 çalışan mesafe ölçümü kullanıyoruz
-        
+        if (attackPoint == null) return; 
+
         // 1. Sahnede ne kadar enemy_1 (Koşucu) varsa bul
         enemy_1[] butunKosucular = FindObjectsOfType<enemy_1>();
         foreach (enemy_1 kosucu in butunKosucular)
         {
-            // Eğer senin karakterin ile düşman arasındaki mesafe, kılıç menzilinden (attackRange) kısaysa vur!
-            if (Vector2.Distance(transform.position, kosucu.transform.position) <= attackRange)
+            if (Vector2.Distance(attackPoint.position, kosucu.transform.position) <= attackRange)
             {
                 kosucu.HasarAl(attackDamage);
-                Debug.Log("Kılıç Enemy 1'e KESİN OLARAK DEĞDİ!");
             }
         }
 
@@ -197,20 +234,16 @@ public class main_player : MonoBehaviour
         enemy_2[] butunBuyuculer = FindObjectsOfType<enemy_2>();
         foreach (enemy_2 buyucu in butunBuyuculer)
         {
-            if (Vector2.Distance(transform.position, buyucu.transform.position) <= attackRange)
+            if (Vector2.Distance(attackPoint.position, buyucu.transform.position) <= attackRange)
             {
                 buyucu.HasarAl(attackDamage);
-                Debug.Log("Kılıç Enemy 2'ye KESİN OLARAK DEĞDİ!");
             }
         }
     }
 
-    // --- YENİ: DÜŞMANLARDAN VE MERMİLERDEN HASAR ALMA SİSTEMİ ---
     public void HasarAl(int alinacakHasar)
     {
         guncelCan -= alinacakHasar;
-        
-        // Can sıfırın altına inmesin
         if (guncelCan < 0) guncelCan = 0; 
         
         KalpResminiGuncelle();
@@ -219,21 +252,17 @@ public class main_player : MonoBehaviour
         if (guncelCan <= 0)
         {
             Debug.Log("OYUN BİTTİ! Karakter Öldü.");
-            // İleride buraya oyun bitiş ekranını veya yeniden başlatma kodunu yazarız
         }
     }
 
-    // --- YENİ: KALP ARAYÜZÜNÜ (UI) GÜNCELLEME ---
     void KalpResminiGuncelle()
     {
-        // Eğer UI resmini sürüklemeyi unuttuysak veya dizi boşsa hata vermesin diye kontrol ediyoruz
         if (kalpGorseli != null && kalpResimleri.Length > guncelCan)
         {
             kalpGorseli.sprite = kalpResimleri[guncelCan];
         }
     }
 
-    // Unity ekranında vuruş menzilini görmeni sağlar
     void OnDrawGizmosSelected()
     {
         if (attackPoint == null) return;

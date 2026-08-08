@@ -1,11 +1,11 @@
 using System.Collections;
 using UnityEngine;
 
-// Sınıf adı dosya adıyla BİREBİR aynı olmalı (seninki enemy_1)
+// Sınıf adı dosya adıyla BİREBİR aynı olmalı
 public class enemy_1 : MonoBehaviour 
 {
     [Header("Can Sistemi")]
-    public int can = 3; // Koşucu düşmanın canı (3 vuruşta ölür)
+    public int can = 3; 
 
     [Header("Hareket Ayarları")]
     public float hiz = 3f;
@@ -13,23 +13,25 @@ public class enemy_1 : MonoBehaviour
     [Header("Saldırı Ayarları")]
     public float saldiriMenzili = 1.5f; 
     public float saldiriBeklemeSuresi = 1.5f; 
-    public int attackDamage = 1; // Kazma vurduğunda senden gidecek can (1 can = yarım kalp)
+    public int attackDamage = 1; 
     
     public float savurmaAcisi = 45f;    
     public float savurmaHizi = 0.15f;    
 
     [Header("Hasar Sistemi (Hitbox)")]
-    public Transform vurusNoktasi; // Kazmanın ucu
+    public Transform vurusNoktasi; 
     public float vurusYariCapi = 0.5f; 
-    public LayerMask playerLayer; // Unity'den 'Player' katmanını seçeceğiz
 
     private Transform playerTransform;
     private bool isAttacking = false;
     private float sonSaldiriZamani = 0f;
 
+    // YENİ: Kılıç savrulurken saniyede 10 kere hasar almayı engelleyen kalkan sistemi
+    private float sonHasarAlmaZamani = 0f;
+    private float hasarAlmaBeklemeSuresi = 0.4f; // Kılıç sallama süresinden büyük olmalı
+
     void Start()
     {
-        // Player etiketine sahip objeyi (seni) bul
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj != null)
         {
@@ -43,18 +45,15 @@ public class enemy_1 : MonoBehaviour
 
         float mesafe = Vector2.Distance(transform.position, playerTransform.position);
 
-        // Saldırmıyorsa oyuncuya doğru dön
         if (!isAttacking)
         {
             transform.up = playerTransform.position - transform.position;
         }
 
-        // Menzilde değilse yürü
         if (mesafe > saldiriMenzili && !isAttacking)
         {
             transform.Translate(Vector2.up * hiz * Time.deltaTime, Space.Self);
         }
-        // Menzildeyse ve bekleme süresi dolmuşsa saldır
         else if (mesafe <= saldiriMenzili && Time.time > sonSaldiriZamani + saldiriBeklemeSuresi && !isAttacking)
         {
             sonSaldiriZamani = Time.time;
@@ -70,7 +69,6 @@ public class enemy_1 : MonoBehaviour
         float targetZ = startZ - savurmaAcisi; 
         float elapsed = 0f;
 
-        // 1. İleri Savur
         while (elapsed < savurmaHizi)
         {
             elapsed += Time.deltaTime;
@@ -80,12 +78,10 @@ public class enemy_1 : MonoBehaviour
         }
         transform.rotation = Quaternion.Euler(0, 0, targetZ);
 
-        // --- KAZMA HEDEFE ULAŞTIĞINDA HASAR VUR ---
         VurulanlariTara();
 
         elapsed = 0f;
 
-        // 2. Geri Çek
         while (elapsed < savurmaHizi)
         {
             elapsed += Time.deltaTime;
@@ -100,12 +96,10 @@ public class enemy_1 : MonoBehaviour
 
     void VurulanlariTara()
     {
-        // Sahnede main_player koduna sahip objeyi (seni) bulur
         main_player oyuncu = FindObjectOfType<main_player>();
         
         if (oyuncu != null)
         {
-            // Kazmanın vurma alanında mısın diye mesafeyi ölçer
             if (Vector2.Distance(transform.position, oyuncu.transform.position) <= vurusYariCapi)
             {
                 oyuncu.HasarAl(attackDamage); 
@@ -114,16 +108,19 @@ public class enemy_1 : MonoBehaviour
         }
     }
 
-    // --- YENİ EKLENDİ: SEN KILIÇ SALLADIĞINDA ÇALIŞACAK ---
     public void HasarAl(int alinacakHasar)
     {
+        // YENİ EKLENDİ: Kalkan (Cooldown) devredeyse hasarı iptal et
+        if (Time.time < sonHasarAlmaZamani + hasarAlmaBeklemeSuresi) return;
+
+        sonHasarAlmaZamani = Time.time;
         can -= alinacakHasar;
         Debug.Log("Enemy 1 hasar aldı! Kalan Can: " + can);
 
         if (can <= 0)
         {
             Debug.Log("Enemy 1 ÖLDÜ!");
-            Destroy(gameObject); // Düşman silinir
+            Destroy(gameObject); 
         }
     }
 

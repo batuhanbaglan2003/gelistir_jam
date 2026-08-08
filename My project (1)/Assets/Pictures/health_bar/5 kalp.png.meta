@@ -1,22 +1,22 @@
 fileFormatVersion: 2
-guid: 693d82d6cc98eba40adb2f872f036186
+guid: 486ea9b023f2a254bba9e52e852db915
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5282850425632286017
-    second: 2.5 kalp_0
+      213: 7596745853817368454
+    second: 5 kalp_0
   - first:
-      213: -5976806483412132329
-    second: 2.5 kalp_1
+      213: -4453331099639831644
+    second: 5 kalp_1
   - first:
-      213: 6988988741665728106
-    second: 2.5 kalp_2
+      213: -2770445732743404093
+    second: 5 kalp_2
   - first:
-      213: 4663279180247318960
-    second: 2.5 kalp_3
+      213: -5055271122336955503
+    second: 5 kalp_3
   - first:
-      213: -627583169974739898
-    second: 2.5 kalp_4
+      213: -6414527170368108495
+    second: 5 kalp_4
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -112,13 +112,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 2.5 kalp_0
+      name: 5 kalp_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 477
-        height: 952
+        y: 152
+        width: 488
+        height: 800
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -127,20 +127,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fba9aa2178b8fa6b0800000000000000
-      internalID: -5282850425632286017
+      spriteID: 68fa4b1da101d6960800000000000000
+      internalID: 7596745853817368454
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 2.5 kalp_1
+      name: 5 kalp_1
       rect:
         serializedVersion: 2
-        x: 511
-        y: 156
-        width: 446
-        height: 413
+        x: 521
+        y: 152
+        width: 432
+        height: 429
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -149,20 +149,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 71ed7f87b2e1e0da0800000000000000
-      internalID: -5976806483412132329
+      spriteID: 4a3a4caa5f69232c0800000000000000
+      internalID: -4453331099639831644
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 2.5 kalp_2
+      name: 5 kalp_2
       rect:
         serializedVersion: 2
-        x: 991
-        y: 156
-        width: 422
-        height: 413
+        x: 986
+        y: 152
+        width: 433
+        height: 429
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -171,20 +171,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a66a0363b30edf060800000000000000
-      internalID: 6988988741665728106
+      spriteID: 3c52556d8466d89d0800000000000000
+      internalID: -2770445732743404093
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 2.5 kalp_3
+      name: 5 kalp_3
       rect:
         serializedVersion: 2
-        x: 1447
-        y: 156
-        width: 420
-        height: 413
+        x: 1451
+        y: 152
+        width: 428
+        height: 429
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -193,20 +193,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0b1cd1315bb47b040800000000000000
-      internalID: 4663279180247318960
+      spriteID: 193c0ddb2b118d9b0800000000000000
+      internalID: -5055271122336955503
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 2.5 kalp_4
+      name: 5 kalp_4
       rect:
         serializedVersion: 2
-        x: 1901
-        y: 156
-        width: 499
-        height: 796
+        x: 1907
+        y: 152
+        width: 493
+        height: 800
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -215,8 +215,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 64c54a69e606a47f0800000000000000
-      internalID: -627583169974739898
+      spriteID: 1380e1036850bf6a0800000000000000
+      internalID: -6414527170368108495
       vertices: []
       indices: 
       edges: []
@@ -235,11 +235,11 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      2.5 kalp_0: -5282850425632286017
-      2.5 kalp_1: -5976806483412132329
-      2.5 kalp_2: 6988988741665728106
-      2.5 kalp_3: 4663279180247318960
-      2.5 kalp_4: -627583169974739898
+      5 kalp_0: 7596745853817368454
+      5 kalp_1: -4453331099639831644
+      5 kalp_2: -2770445732743404093
+      5 kalp_3: -5055271122336955503
+      5 kalp_4: -6414527170368108495
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
