@@ -148,16 +148,13 @@ public class boss_1 : MonoBehaviour
     // Oyuncu boss'un trigger alanına girdiği an çalışır
     void OnTriggerEnter2D(Collider2D diger)
     {
-        // Eğer çarpan nesne "Player" etiketine sahipse
         if (diger.CompareTag("Player"))
         {
             Debug.Log("Boss oyuncuyu ezdi ve öldürdü!");
             
-            // Oyuncuyu sahneden tamamen siler (ölür)
-            Destroy(diger.gameObject);
-
-            // Alternatif olarak eğer oyuncunun kendi HasarAl fonksiyonu varsa:
-            // diger.GetComponent<main_player>().HasarAl(999); // Tek atışta öldürür
+            // Oyuncuyu direkt silmek yerine senin HasarAl sistemine 999 devasa hasar gönderiyoruz!
+            // Böylece ana karakterindeki kod çalışacak, hem ölüm sayacı artacak hem de karakter silinecek.
+            diger.GetComponent<main_player>().HasarAl(999); 
         }
     }
 }

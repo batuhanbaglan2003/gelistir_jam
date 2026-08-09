@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI; 
+using UnityEngine.UI;
+using UnityEngine.SceneManagement; // BUNU EKLEDİK
 
 public class main_player : MonoBehaviour
 {
@@ -249,9 +250,16 @@ public class main_player : MonoBehaviour
         KalpResminiGuncelle();
         Debug.Log("Oyuncu hasar aldı! Kalan Can: " + guncelCan);
 
+        // CAN SIFIRA DÜŞTÜĞÜNDE ÇALIŞACAK KISIM
         if (guncelCan <= 0)
         {
-            Debug.Log("OYUN BİTTİ! Karakter Öldü.");
+            Debug.Log("OYUN BİTTİ! Karakter Öldü ve Sahne Sıfırlanıyor...");
+
+            // 1. ADIM: Ölüm sayacını 1 artırıyoruz
+            OlumSayaci.toplamOlum++; 
+
+            // 2. ADIM: Destroy yapmak yerine, sahneyi en baştaki haline yeniliyoruz
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); 
         }
     }
 
