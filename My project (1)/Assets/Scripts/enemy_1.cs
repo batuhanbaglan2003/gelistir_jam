@@ -7,6 +7,10 @@ public class enemy_1 : MonoBehaviour
     [Header("Can Sistemi")]
     public int can = 3; 
 
+    [Header("Ses Efektleri")]
+    public AudioSource sesKaynagi;
+    public AudioClip[] hasarSesleri; // Birden fazla sesi tutacağımız liste
+
     [Header("Hareket Ayarları")]
     public float hiz = 3f;
     public float algilamaMesafesi = 7f; // YENİ: Düşmanın seni fark edeceği maksimum uzaklık
@@ -123,6 +127,25 @@ public class enemy_1 : MonoBehaviour
         if (Time.time < sonHasarAlmaZamani + hasarAlmaBeklemeSuresi) return;
 
         sonHasarAlmaZamani = Time.time;
+        
+        // YENİ SES ÇALMA SİSTEMİ (Tam Güçlü 2D)
+        if (hasarSesleri != null && hasarSesleri.Length > 0)
+        {
+            int rastgeleIndex = Random.Range(0, hasarSesleri.Length);
+            
+            // Havada geçici bir hoparlör yaratıyoruz
+            GameObject geciciSes = new GameObject("GoblinSesi");
+            AudioSource geciciKaynak = geciciSes.AddComponent<AudioSource>();
+            
+            geciciKaynak.clip = hasarSesleri[rastgeleIndex];
+            geciciKaynak.spatialBlend = 0f; // Sesi zorla 2D (Her yerden eşit duyulan) yapar!
+            geciciKaynak.volume = 1f; // Ses seviyesini maksimum (1.0) yapar!
+            geciciKaynak.Play();
+            
+            // Ses dosyasının uzunluğu (saniye) kadar bekle ve sonra bu geçici hoparlörü sil
+            Destroy(geciciSes, geciciKaynak.clip.length);
+        }
+
         can -= alinacakHasar;
         Debug.Log("Enemy 1 hasar aldı! Kalan Can: " + can);
 
