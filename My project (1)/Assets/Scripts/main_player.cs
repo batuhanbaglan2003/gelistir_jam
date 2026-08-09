@@ -5,6 +5,9 @@ using UnityEngine.SceneManagement; // BUNU EKLEDİK
 
 public class main_player : MonoBehaviour
 {
+    [Header("Ses Efektleri")]
+    public AudioSource kilicSesKaynagi;
+
     [Header("Can Sistemi ve UI")]
     public int maksimumCan = 10;
     public int guncelCan;
@@ -84,12 +87,18 @@ public class main_player : MonoBehaviour
             comboStep = 0;
         }
 
-        // ---- TIKLAMA ----
+       // ---- TIKLAMA ----
         if (Input.GetMouseButtonDown(0) && !isAttacking)
         {
+            // YENİ: Tıkladığımız an kılıç sesini çal!
+            if (kilicSesKaynagi != null)
+            {
+                kilicSesKaynagi.Play(); 
+            }
+
             lastClickTime = Time.time;
             comboStep++;
-
+            // ... (kodun geri kalanı aynı kalacak)
             switch (comboStep)
             {
                 case 1: 
