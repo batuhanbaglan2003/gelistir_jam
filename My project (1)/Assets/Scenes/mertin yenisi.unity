@@ -839,6 +839,98 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a407162caa0e5fc4c8226cbf755eddff, type: 3}
+--- !u!1 &585912668
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 585912671}
+  - component: {fileID: 585912670}
+  - component: {fileID: 585912669}
+  m_Layer: 0
+  m_Name: BossKapisi
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &585912669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 585912668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 826e5e8da231a634cbc9190d0d87f6e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BossMuzikTetigi
+  oyununMuzikSistemi: {fileID: 721241480}
+--- !u!61 &585912670
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 585912668}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
+--- !u!4 &585912671
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 585912668}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 11.52, y: 3.72, z: 0}
+  m_LocalScale: {x: 1.5215, y: 1.5215, z: 1.5215}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &646055285
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -854,6 +946,10 @@ PrefabInstance:
     - target: {fileID: 3774644895068865669, guid: a407162caa0e5fc4c8226cbf755eddff, type: 3}
       propertyPath: m_SortingOrder
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6044880156992997757, guid: a407162caa0e5fc4c8226cbf755eddff, type: 3}
+      propertyPath: can
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6044880156992997757, guid: a407162caa0e5fc4c8226cbf755eddff, type: 3}
       propertyPath: hiz
@@ -920,6 +1016,152 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a407162caa0e5fc4c8226cbf755eddff, type: 3}
+--- !u!1 &721241479
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 721241482}
+  - component: {fileID: 721241481}
+  - component: {fileID: 721241480}
+  m_Layer: 0
+  m_Name: MuzikSistemi
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &721241480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 721241479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa0be82b3f915c748a67ca62b26b3553, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MuzikSistemi
+  teyp: {fileID: 721241481}
+  normalMuzik: {fileID: 8300000, guid: bc160b17e5f023e439da9b87e93a15cd, type: 3}
+  bossMuzigi: {fileID: 8300000, guid: 1eb845a4cfd3b0442bf609eb94eb18f2, type: 3}
+  gecisSuresi: 2
+--- !u!82 &721241481
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 721241479}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!4 &721241482
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 721241479}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -18.60702, y: -4.77115, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &735693396
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -935,6 +1177,10 @@ PrefabInstance:
     - target: {fileID: 3774644895068865669, guid: a407162caa0e5fc4c8226cbf755eddff, type: 3}
       propertyPath: m_SortingOrder
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6044880156992997757, guid: a407162caa0e5fc4c8226cbf755eddff, type: 3}
+      propertyPath: can
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6044880156992997757, guid: a407162caa0e5fc4c8226cbf755eddff, type: 3}
       propertyPath: hiz
@@ -1569,6 +1815,10 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6044880156992997757, guid: a407162caa0e5fc4c8226cbf755eddff, type: 3}
+      propertyPath: can
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6044880156992997757, guid: a407162caa0e5fc4c8226cbf755eddff, type: 3}
       propertyPath: hiz
       value: 2
       objectReference: {fileID: 0}
@@ -2136,7 +2386,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6495511028543345739, guid: c5401616d3a7ba04692b74541e06b1ea, type: 3}
       propertyPath: can
-      value: 5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6495511028543345739, guid: c5401616d3a7ba04692b74541e06b1ea, type: 3}
       propertyPath: hiz
@@ -2434,6 +2684,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::boss_1
   can: 1100
+  atilmaSesi: {fileID: 8300000, guid: a4b0c9075f88b014ba179c2800b002e0, type: 3}
   normalHiz: 2.5
   algilamaMesafesi: 10
   atilmaHizi: 10
@@ -2800,6 +3051,10 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6044880156992997757, guid: a407162caa0e5fc4c8226cbf755eddff, type: 3}
+      propertyPath: can
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6044880156992997757, guid: a407162caa0e5fc4c8226cbf755eddff, type: 3}
       propertyPath: hiz
       value: 2
       objectReference: {fileID: 0}
@@ -3131,3 +3386,5 @@ SceneRoots:
   - {fileID: 1796930097}
   - {fileID: 1756578149}
   - {fileID: 1641380441}
+  - {fileID: 721241482}
+  - {fileID: 585912671}

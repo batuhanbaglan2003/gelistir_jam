@@ -6,6 +6,9 @@ public class boss_1 : MonoBehaviour
     [Header("Hayatta Kalma (Can) Sistemi")]
     public float can = 1100f; // Başlangıç canı 1100 yapıldı
 
+    [Header("Boss Ses Efektleri")]
+    public AudioClip atilmaSesi;
+   
     [Header("Hareket ve Algılama")]
     public float normalHiz = 2.5f;
     public float algilamaMesafesi = 12f; // İstediğin gibi 12 yapıldı
@@ -90,12 +93,24 @@ public class boss_1 : MonoBehaviour
             yield return null;
         }
 
-        // Kilitlenme süresi bitti, çizgiyi kapat
+       // Kilitlenme süresi bitti, çizgiyi kapat
         if (lineRenderer != null) lineRenderer.enabled = false;
 
         // Her atıldığında canından 100 eksiltelim
         can -= 100f;
         Debug.Log("Boss atıldı! Harcanan can: 100. Kalan Can: " + can);
+
+        // YENİ: Atılma sesini tam bu anda patlatıyoruz!
+        if (atilmaSesi != null)
+        {
+            GameObject geciciSes = new GameObject("BossAtilmaSesi");
+            AudioSource geciciKaynak = geciciSes.AddComponent<AudioSource>();
+            geciciKaynak.clip = atilmaSesi;
+            geciciKaynak.spatialBlend = 0f;
+            geciciKaynak.volume = 1f;
+            geciciKaynak.Play();
+            Destroy(geciciSes, geciciKaynak.clip.length);
+        }
 
         if (can <= 0)
         {
